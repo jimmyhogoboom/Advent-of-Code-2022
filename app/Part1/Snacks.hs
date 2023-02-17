@@ -1,37 +1,11 @@
+module Part1.Snacks where
+
 import Data.List
 import Data.Maybe (maybeToList)
-import System.Environment (getArgs)
-
-main :: IO ()
-main = do
-  args <- getArgs
-  case args of
-    (file : _) -> do
-      content <- readFile file
-      let elves = parse content
-      part1 elves
-      part2 elves
-    _ -> print "whoops"
-
--- Parts --
-
-part1 :: [Elf] -> IO ()
-part1 elves = do
-  putStrLn "\nDay 1.1: Most calories: "
-  print $ biggestSnack elves
-
-part2 :: [Elf] -> IO ()
-part2 elves = do
-  putStrLn "\nDay 1.2: Top 3 snack-holders total: "
-  print $ topSnackHoldersTotal 3 elves
-
--- Types --
 
 type Snack = Int
 
 newtype Elf = Elf {snacks :: [Snack]} deriving (Show)
-
--- Logic --
 
 snackCalories :: Elf -> Int
 snackCalories = sum . snacks
@@ -57,3 +31,4 @@ parseLines currentElf lines =
             parseLines (Just (Elf (prevSnacks ++ [read line]))) rest
           _ ->
             parseLines (Just (Elf [read line])) rest
+
