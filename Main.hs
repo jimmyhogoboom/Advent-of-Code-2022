@@ -9,11 +9,19 @@ main = do
       content <- readFile file
       let elves = parse content
       print elves
+      putStrLn "\nMost calories: "
+      print $ biggestSnack elves
     _ -> print "whoops"
 
 type Snack = Int
 
 newtype Elf = Elf {snacks :: [Snack]} deriving (Show)
+
+snackCalories :: Elf -> Int
+snackCalories = sum . snacks
+
+biggestSnack :: [Elf] -> Int
+biggestSnack = maximum . map snackCalories
 
 parse :: String -> [Elf]
 parse = parseLines Nothing . lines
