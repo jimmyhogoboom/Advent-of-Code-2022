@@ -1,3 +1,4 @@
+import Data.List
 import Data.Maybe (maybeToList)
 import System.Environment (getArgs)
 
@@ -8,10 +9,19 @@ main = do
     (file : _) -> do
       content <- readFile file
       let elves = parse content
-      print elves
-      putStrLn "\nMost calories: "
-      print $ biggestSnack elves
+      part1 elves
+      part2 elves
     _ -> print "whoops"
+
+part1 :: [Elf] -> IO ()
+part1 elves = do
+  putStrLn "\nDay 1.1: Most calories: "
+  print $ biggestSnack elves
+
+part2 :: [Elf] -> IO ()
+part2 elves = do
+  putStrLn "\nDay 1.2: Top 3 snack-holders total: "
+  print $ topSnackHoldersTotal elves 3
 
 type Snack = Int
 
@@ -22,6 +32,9 @@ snackCalories = sum . snacks
 
 biggestSnack :: [Elf] -> Int
 biggestSnack = maximum . map snackCalories
+
+topSnackHoldersTotal :: [Elf] -> Int -> Int
+topSnackHoldersTotal elves n = sum $ take n $ sortBy (flip compare) $ map snackCalories elves
 
 parse :: String -> [Elf]
 parse = parseLines Nothing . lines
