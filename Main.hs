@@ -7,22 +7,26 @@ main = do
   case args of
     (file : _) -> do
       content <- readFile file
-      print $ parse content
+      let elves = parse content
+      print elves
     _ -> print "whoops"
 
-type ElfIndex = Int
+type Snack = Int
 
-type Calories = Int
-
-data Elf
-  = ElfCalories ElfIndex Calories
-  deriving (Show)
+newtype Elf = Elf {snacks :: [Snack]} deriving (Show)
 
 parse :: String -> [Elf]
-parse = parseLines [] . lines
+parse = parseLines Nothing . lines
 
-parseLines :: [Elf] -> [String] -> [Elf]
-parseLines elves lines =
+parseLines :: Maybe Elf -> [String] -> [Elf]
+parseLines currentElf lines =
   case lines of
-    [] -> elves
-    (line : rest) -> parseLines (elves ++ [ElfCalories (length elves + 1) 0]) rest
+    [] -> maybeToList currentElf
+    (line : rest) ->
+      if line == ""
+        then maybe id (:) currentElf (parseLines Nothing rest)
+        else case currentElf of
+          Just (Elf prevSnacks) ->
+            parseLines (Just (Elf (prevSnacks ++ [read line]))) rest
+          _ ->
+            parseLines (Just (Elf [read line])) rest
