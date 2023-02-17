@@ -23,7 +23,7 @@ part1 elves = do
 part2 :: [Elf] -> IO ()
 part2 elves = do
   putStrLn "\nDay 1.2: Top 3 snack-holders total: "
-  print $ topSnackHoldersTotal elves 3
+  print $ topSnackHoldersTotal 3 elves
 
 -- Types --
 
@@ -39,8 +39,8 @@ snackCalories = sum . snacks
 biggestSnack :: [Elf] -> Int
 biggestSnack = maximum . map snackCalories
 
-topSnackHoldersTotal :: [Elf] -> Int -> Int
-topSnackHoldersTotal elves n = sum $ take n $ sortBy (flip compare) $ map snackCalories elves
+topSnackHoldersTotal :: Int -> [Elf] -> Int
+topSnackHoldersTotal n = sum . take n . sortBy (flip compare) . map snackCalories
 
 parse :: String -> [Elf]
 parse = parseLines Nothing . lines
