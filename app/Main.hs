@@ -1,28 +1,14 @@
-import Part1.Snacks
-import Part2.RPS
+import qualified Day1.Snacks as Day1
+import qualified Day2.RPS as Day2
 import System.Environment (getArgs)
 
--- TODO: Move input files into their matching Part directories
--- TODO: Have each Part module read its own file
--- TODO: Main should call all parts, printing each part's answer -OR- take a number argument to choose the part to run
 main :: IO ()
 main = do
-  args <- getArgs
+  args <- map read <$> getArgs
   case args of
-    (file : _) -> do
-      content <- readFile file
-      part1 content
-      part2 content
-    _ -> print "whoops"
-
-part1 :: String -> IO ()
-part1 content = do
-  let elves = parse content
-  putStrLn "\nDay 1.1: Most calories: "
-  print $ biggestSnack elves
-
-part2 :: String -> IO ()
-part2 content = do
-  let elves = parse content
-  putStrLn "\nDay 1.2: Top 3 snack-holders total: "
-  print $ topSnackHoldersTotal 3 elves
+    [1, 1] ->
+      Day1.part1
+    [1, 2] ->
+      Day1.part2
+    [_, _] -> putStrLn "That part isn't done yet"
+    _ -> putStrLn "Invalid input. Use: `-- 1 1` to run Day 1 Part 1"

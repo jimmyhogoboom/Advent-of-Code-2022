@@ -25,8 +25,8 @@ executable x2022
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules:    Part1.Snacks
-                      Part2.RPS
+    other-modules:    Day1.Snacks
+                      Day2.RPS
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

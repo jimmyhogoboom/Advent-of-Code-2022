@@ -1,3 +1,4 @@
 # To Run
 
-`cabal run . -- "puzzleInput.txt"`
+To run Day 1 Part 1: 
+`cabal run . -- 1 1`
