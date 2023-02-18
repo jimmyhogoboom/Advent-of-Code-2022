@@ -1,55 +1,64 @@
 module Day2.RPS where
 
 import Data.Maybe
+import Debug.Trace
 
 fileName :: String
 fileName = "app/Day2/puzzleInput.txt"
 
+-- fileName = "app/Day2/testInput.txt"
+
 part1 :: IO ()
 part1 = do
-  -- content <- readFile fileName
-  let content = testData
+  content <- readFile fileName
+  -- let content = testData
   let points = parse content
   putStrLn "\nDay 2.1: Point from strategy: "
-  print $ points
-  print $ getScore "A" "Z"
+  print points
 
--- 1        2         3
--- A: Rock, B: Paper, C: Scissors
--- X: Rock, Y: Paper, Z: Scissors
+testData = "A Y\nB X\nB X\nC Y"
 
-testData = "A Y\nB X\nC Z"
+-- Mapping:
+-- A -> Rock -> X
+-- B -> Paper -> Y
+-- C -> Scissors -> Z
 
--- TODO: get score from values: do a sort on the two?
-getScore :: String -> String -> Maybe Int
+-- Points:
+-- Rock: 1
+-- Paper: 2
+-- Scissors: 3
+
+-- NOTE: This could be done by creating recursive types and adding an instance of Ord
+getScore :: Char -> Char -> Int
 getScore x y =
-  Just
-    ( case x of
-        "A" ->
-          1 + case y of
-            "X" -> 3
-            "Y" -> 0
-            "Z" -> 6
-            _ -> 0
-        "B" ->
-          2 + case y of
-            "X" -> 6
-            "Y" -> 3
-            "Z" -> 0
-            _ -> 0
-        "C" ->
-          3 + case y of
-            "X" -> 0
-            "Y" -> 6
-            "Z" -> 3
-            _ -> 0
+  case y of
+    -- I play X (Rock)
+    'X' ->
+      1 + case x of
+        -- Opponent plays A (Rock)
+        'A' -> 3 -- draw
+        -- Opponent plays B (Paper)
+        'B' -> 0 -- lose
+        -- Opponent plays C (Scissors)
+        'C' -> 6 -- win
         _ -> 0
-    )
+    'Y' ->
+      2 + case x of
+        'A' -> 6
+        'B' -> 3
+        'C' -> 0
+        _ -> 0
+    'Z' ->
+      3 + case x of
+        'A' -> 0
+        'B' -> 6
+        'C' -> 3
+        _ -> 0
+    _ -> 0
 
 parse :: String -> Int
 parse = parseLines Nothing . lines
 
--- TODO: map win/tie/loss to points and return
 parseLines :: Maybe Int -> [String] -> Int
 parseLines currentScore lines =
   case lines of
@@ -57,10 +66,9 @@ parseLines currentScore lines =
     (line : rest) ->
       if line == ""
         then maybeScore
-        else case break (== ' ') line of
-          (x, y) ->
-            parseLines (Just (maybeScore + fromMaybe 0 (getScore x y))) rest
-          _ ->
-            parseLines currentScore rest
+        else case line of
+          (x : ' ' : y : _) -> do
+            parseLines (Just (maybeScore + getScore x y)) rest
+          _ -> maybeScore
   where
     maybeScore = fromMaybe 0 currentScore
