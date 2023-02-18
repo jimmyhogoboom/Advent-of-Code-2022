@@ -2,6 +2,9 @@ import Part1.Snacks
 import Part2.RPS
 import System.Environment (getArgs)
 
+-- TODO: Move input files into their matching Part directories
+-- TODO: Have each Part module read its own file
+-- TODO: Main should call all parts, printing each part's answer -OR- take a number argument to choose the part to run
 main :: IO ()
 main = do
   args <- getArgs
