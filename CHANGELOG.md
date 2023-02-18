@@ -1,4 +1,4 @@
-# Revision history for x2022
+# Revision history for AoC22
 
 ## 0.1.0.0 -- YYYY-mm-dd
 
