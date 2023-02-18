@@ -5,7 +5,7 @@ import Text.Read (readMaybe)
 
 main :: IO ()
 main = do
-  args <- map (readMaybe :: String -> Maybe Int) <$> getArgs
+  args <- map readMaybe <$> getArgs
   case args of
     [Just 1, Just 1] ->
       Day1.part1
