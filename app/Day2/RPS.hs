@@ -12,7 +12,7 @@ part1 :: IO ()
 part1 = do
   content <- readFile fileName
   -- let content = testData
-  let points = parse content
+  let points = parse1 content
   putStrLn "\nDay 2.1: Point from strategy: "
   print points
 
@@ -56,11 +56,14 @@ getScore x y =
         _ -> 0
     _ -> 0
 
-parse :: String -> Int
-parse = parseLines Nothing . lines
+parse1 :: String -> Int
+parse1 = parseLines getScore Nothing . lines
 
-parseLines :: Maybe Int -> [String] -> Int
-parseLines currentScore lines =
+-- parse :: String -> Int
+-- parse = parseLines Nothing . lines
+
+parseLines :: (Char -> Char -> Int) -> Maybe Int -> [String] -> Int
+parseLines scoreFun currentScore lines =
   case lines of
     [] -> maybeScore
     (line : rest) ->
@@ -68,7 +71,7 @@ parseLines currentScore lines =
         then maybeScore
         else case line of
           (x : ' ' : y : _) -> do
-            parseLines (Just (maybeScore + getScore x y)) rest
+            parseLines scoreFun (Just (maybeScore + scoreFun x y)) rest
           _ -> maybeScore
   where
     maybeScore = fromMaybe 0 currentScore
