@@ -13,6 +13,8 @@ main = do
       Day1.part2
     [Just 2, Just 1] ->
       Day2.part1
+    [Just 2, Just 2] ->
+      Day2.part2
     [Just x, Just y] ->
       putStrLn "That part isn't done yet"
     _ ->
