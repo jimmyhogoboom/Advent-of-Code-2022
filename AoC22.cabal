@@ -27,6 +27,7 @@ executable AoC22
     -- Modules included in this executable, other than Main.
     other-modules:    Day1.Snacks
                       Day2.RPS
+                      Day3.Ruck
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
